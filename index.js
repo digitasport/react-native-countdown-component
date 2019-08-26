@@ -6,15 +6,27 @@ import {
   View,
   Text,
   TouchableOpacity,
-  AppState
+  AppState,
+  I18nManager
 } from 'react-native';
 import _ from 'lodash';
-import {sprintf} from 'sprintf-js';
-
-const DEFAULT_DIGIT_STYLE = {backgroundColor: '#FAB913'};
-const DEFAULT_DIGIT_TXT_STYLE = {color: '#000'};
-const DEFAULT_TIME_LABEL_STYLE = {color: '#000'};
-const DEFAULT_SEPARATOR_STYLE = {color: '#000'};
+import { sprintf } from 'sprintf-js';
+const ARABIC_NUMBERS = {
+  '1': '١',
+  '2': '٢',
+  '3': '٣',
+  '4': '٤',
+  '5': '٥',
+  '6': '٦',
+  '7': '٧',
+  '8': '٨',
+  '9': '٩',
+  '0': '٠'
+}
+const DEFAULT_DIGIT_STYLE = { backgroundColor: '#FAB913' };
+const DEFAULT_DIGIT_TXT_STYLE = { color: '#000' };
+const DEFAULT_TIME_LABEL_STYLE = { color: '#000' };
+const DEFAULT_SEPARATOR_STYLE = { color: '#000' };
 const DEFAULT_TIME_TO_SHOW = ['D', 'H', 'M', 'S'];
 const DEFAULT_TIME_LABELS = {
   d: 'Days',
@@ -69,7 +81,7 @@ class CountDown extends React.Component {
   }
 
   _handleAppStateChange = currentAppState => {
-    const {until, wentBackgroundAt} = this.state;
+    const { until, wentBackgroundAt } = this.state;
     if (currentAppState === 'active' && wentBackgroundAt && this.props.running) {
       const diff = (Date.now() - wentBackgroundAt) / 1000.0;
       this.setState({
@@ -78,12 +90,12 @@ class CountDown extends React.Component {
       });
     }
     if (currentAppState === 'background') {
-      this.setState({wentBackgroundAt: Date.now()});
+      this.setState({ wentBackgroundAt: Date.now() });
     }
   }
 
   getTimeLeft = () => {
-    const {until} = this.state;
+    const { until } = this.state;
     return {
       seconds: until % 60,
       minutes: parseInt(until / 60, 10) % 60,
@@ -110,7 +122,7 @@ class CountDown extends React.Component {
     }
 
     if (this.state.until === 0) {
-      this.setState({lastUntil: 0, until: 0});
+      this.setState({ lastUntil: 0, until: 0 });
     } else {
       if (this.props.onChange) {
         this.props.onChange(this.state.until);
@@ -123,31 +135,35 @@ class CountDown extends React.Component {
   };
 
   renderDigit = (d) => {
-    const {digitStyle, digitTxtStyle, size} = this.props;
+    const { digitStyle, digitTxtStyle, size } = this.props;
+    console.log('d', d)
     return (
       <View style={[
         styles.digitCont,
         digitStyle,
-        {width: size * 2.3, height: size * 2.6},
+        { width: size * 2.3, height: size * 2.6 },
       ]}>
         <Text style={[
           styles.digitTxt,
-          {fontSize: size},
+          { fontSize: size },
           digitTxtStyle,
         ]}>
-          {d}
+          {/* {d} */}
+          {
+            I18nManager.isRTL ? ARABIC_NUMBERS[d[0]]+ARABIC_NUMBERS[d[1]] : d
+          }
         </Text>
       </View>
     );
   };
 
   renderLabel = label => {
-    const {timeLabelStyle, size} = this.props;
+    const { timeLabelStyle, size } = this.props;
     if (label) {
       return (
         <Text style={[
           styles.timeTxt,
-          {fontSize: size / 1.8},
+          { fontSize: size / 1.8 },
           timeLabelStyle,
         ]}>
           {label}
@@ -168,12 +184,12 @@ class CountDown extends React.Component {
   };
 
   renderSeparator = () => {
-    const {separatorStyle, size} = this.props;
+    const { separatorStyle, size } = this.props;
     return (
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Text style={[
           styles.separatorTxt,
-          {fontSize: size * 1.2},
+          { fontSize: size * 1.2 },
           separatorStyle,
         ]}>
           {':'}
@@ -183,9 +199,9 @@ class CountDown extends React.Component {
   };
 
   renderCountDown = () => {
-    const {timeToShow, timeLabels, showSeparator} = this.props;
-    const {until} = this.state;
-    const {days, hours, minutes, seconds} = this.getTimeLeft();
+    const { timeToShow, timeLabels, showSeparator } = this.props;
+    const { until } = this.state;
+    const { days, hours, minutes, seconds } = this.getTimeLeft();
     const newTime = sprintf('%02d:%02d:%02d:%02d', days, hours, minutes, seconds).split(':');
     const Component = this.props.onPress ? TouchableOpacity : View;
 
