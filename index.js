@@ -136,7 +136,6 @@ class CountDown extends React.Component {
 
   renderDigit = (d) => {
     const { digitStyle, digitTxtStyle, size } = this.props;
-    console.log('d', d)
     return (
       <View style={[
         styles.digitCont,
@@ -148,7 +147,6 @@ class CountDown extends React.Component {
           { fontSize: size },
           digitTxtStyle,
         ]}>
-          {/* {d} */}
           {
             I18nManager.isRTL ? ARABIC_NUMBERS[d[0]]+ARABIC_NUMBERS[d[1]] : d
           }
