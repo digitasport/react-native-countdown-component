@@ -49,6 +49,7 @@ class CountDown extends React.Component {
     onChange: PropTypes.func,
     onPress: PropTypes.func,
     onFinish: PropTypes.func,
+    innerLabel: PropTypes.bool
   };
 
   state = {
@@ -151,6 +152,7 @@ class CountDown extends React.Component {
             I18nManager.isRTL ? ARABIC_NUMBERS[d[0]]+ARABIC_NUMBERS[d[1]] : d
           }
         </Text>
+        {this.props.innerLabel && this.renderLabel(this.props.timeLabels.d)}
       </View>
     );
   };
@@ -176,7 +178,7 @@ class CountDown extends React.Component {
         <View style={styles.timeInnerCont}>
           {this.renderDigit(digits)}
         </View>
-        {this.renderLabel(label)}
+        {!this.props.innerLabel && this.renderLabel(label)}
       </View>
     );
   };
@@ -239,6 +241,7 @@ CountDown.defaultProps = {
   until: 0,
   size: 15,
   running: true,
+  innerLabel: true
 };
 
 const styles = StyleSheet.create({
