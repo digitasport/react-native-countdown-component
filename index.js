@@ -137,6 +137,10 @@ class CountDown extends React.Component {
 
   renderDigit = (d, label) => {
     const { digitStyle, digitTxtStyle, size } = this.props;
+    let d_arabic = [];
+    for (let i = 0; i < d.length; ++i) {
+      d_arabic.push(ARABIC_NUMBERS[d[i]]);
+    }
     return (
       <View style={[
         styles.digitCont,
@@ -149,7 +153,7 @@ class CountDown extends React.Component {
           digitTxtStyle,
         ]}>
           {
-            I18nManager.isRTL ? ARABIC_NUMBERS[d[0]]+ARABIC_NUMBERS[d[1]] : d
+            I18nManager.isRTL ? d_arabic.join("") : d
           }
         </Text>
         {this.props.innerLabel && this.renderLabel(label)}
