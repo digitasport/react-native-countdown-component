@@ -26,7 +26,8 @@ const ARABIC_NUMBERS = {
 const DEFAULT_DIGIT_STYLE = { backgroundColor: '#FAB913' };
 const DEFAULT_DIGIT_TXT_STYLE = { color: '#000' };
 const DEFAULT_TIME_LABEL_STYLE = { color: '#000' };
-const DEFAULT_SEPARATOR_STYLE = { color: '#000' };
+const DEFAULT_SEPARATOR_STYLE = { backColor: '#000' };
+const DEFAULT_SEPARATOR_TXT_STYLE = { color: '#ff0' };
 const DEFAULT_TIME_TO_SHOW = ['D', 'H', 'M', 'S'];
 const DEFAULT_TIME_LABELS = {
   d: 'Days',
@@ -42,6 +43,7 @@ class CountDown extends React.Component {
     digitTxtStyle: PropTypes.object,
     timeLabelStyle: PropTypes.object,
     separatorStyle: PropTypes.object,
+    separatorTxtStyle: PropTypes.object,
     timeToShow: PropTypes.array,
     showSeparator: PropTypes.bool,
     size: PropTypes.number,
@@ -188,13 +190,16 @@ class CountDown extends React.Component {
   };
 
   renderSeparator = () => {
-    const { separatorStyle, size } = this.props;
+    const { separatorStyle, size, separatorTxtStyle } = this.props;
     return (
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{
+        justifyContent: 'center', alignItems: 'center',
+        height: size * 1, width: 10, ...separatorStyle,
+      }}>
         <Text style={[
           styles.separatorTxt,
           { fontSize: size * 1.2 },
-          separatorStyle,
+          separatorTxtStyle,
         ]}>
           {':'}
         </Text>
@@ -240,6 +245,7 @@ CountDown.defaultProps = {
   timeLabelStyle: DEFAULT_TIME_LABEL_STYLE,
   timeLabels: DEFAULT_TIME_LABELS,
   separatorStyle: DEFAULT_SEPARATOR_STYLE,
+  separatorTxtStyle: DEFAULT_SEPARATOR_TXT_STYLE,
   timeToShow: DEFAULT_TIME_TO_SHOW,
   showSeparator: false,
   until: 0,
@@ -281,6 +287,7 @@ const styles = StyleSheet.create({
   separatorTxt: {
     backgroundColor: 'transparent',
     fontWeight: 'bold',
+    color: "white"
   },
 });
 
