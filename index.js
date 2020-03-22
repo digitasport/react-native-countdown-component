@@ -74,7 +74,7 @@ class CountDown extends React.Component {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.until !== nextProps.until || this.props.id !== nextProps.id) {
       this.setState({
         lastUntil: this.state.until,
@@ -110,8 +110,7 @@ class CountDown extends React.Component {
   updateTimer = () => {
     // Don't fetch these values here, because their value might be changed
     // in another thread
-    // const {lastUntil, until} = this.state;
-
+    // const {lastUntil, until} = this.state
     if (this.state.lastUntil === this.state.until || !this.props.running) {
       return;
     }
@@ -232,7 +231,7 @@ class CountDown extends React.Component {
 
   render() {
     return (
-      <View style={this.props.style}>
+      <View key={this.state.until} style={this.props.style}>
         {this.renderCountDown()}
       </View>
     );
