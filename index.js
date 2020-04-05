@@ -280,7 +280,6 @@ const styles = StyleSheet.create({
   },
   digitTxt: {
     color: 'white',
-    fontWeight: 'bold',
     fontVariant: ['tabular-nums']
   },
   separatorTxt: {
